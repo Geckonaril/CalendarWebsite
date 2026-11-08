@@ -1,8 +1,20 @@
+using Microsoft.EntityFrameworkCore;
+using Takvim.Api.Data;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException(
+        "Veritabanı bağlantısı bulunamadı.");
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

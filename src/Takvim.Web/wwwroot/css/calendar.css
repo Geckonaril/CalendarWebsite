@@ -1,0 +1,145 @@
+
+.calendar-container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 12px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.calendar-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.calendar-header p {
+    color: #64748b;
+    margin-bottom: 0;
+}
+
+.calendar-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+}
+
+.calendar-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.calendar-toolbar h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0;
+    text-transform: capitalize;
+}
+
+.calendar-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.calendar-weekdays,
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.calendar-weekdays div {
+    text-align: center;
+    font-weight: 600;
+    color: #64748b;
+    padding: 12px 0;
+}
+
+.calendar-grid {
+    gap: 5px;
+}
+
+.calendar-day {
+    min-width: 0;
+    min-height: 86px;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #f1f5f9;
+    border-radius: 9px;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.calendar-day:hover {
+    background: #eff6ff;
+}
+
+.calendar-day.other-month {
+    color: #a1a1aa;
+    background: #fafafa;
+}
+
+.calendar-day.today {
+    border: 2px solid #2563eb;
+    font-weight: 700;
+}
+
+.calendar-day.selected {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.calendar-day:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 2px;
+}
+
+.selected-date-card {
+    margin-top: 20px;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+}
+
+.selected-date-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+@media (max-width: 600px) {
+    .calendar-header {
+        flex-wrap: wrap;
+    }
+
+    .calendar-card {
+        padding: 10px;
+    }
+
+    .calendar-toolbar {
+        flex-wrap: wrap;
+    }
+
+    .calendar-day {
+        min-height: 48px;
+        padding: 6px;
+        text-align: center;
+        font-size: 13px;
+    }
+
+    .calendar-weekdays div {
+        font-size: 12px;
+    }
+}

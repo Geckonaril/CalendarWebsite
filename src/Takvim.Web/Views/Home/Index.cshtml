@@ -1,30 +1,72 @@
-﻿
+﻿@section Styles {
+    <link rel="stylesheet"
+          href="~/css/calendar.css"
+          asp-append-version="true" />
+}
 @{
-    ViewData["Title"] = "Takvim";
+    ViewData["Title"] = "Takvimim";
 }
 
-<div class="container mt-4">
-    <div class="text-center mb-4">
-        <h1 class="display-5">Takvim Yönetim Sistemi</h1>
+<div class="calendar-container">
+
+    <div class="calendar-header">
+        <div>
+            <h1>Takvimim</h1>
+            <p>Günlük planlarını ve etkinliklerini takip et.</p>
+        </div>
+
+        <button class="btn btn-primary" disabled
+                title="Etkinlik ekleme yakında">
+            + Etkinlik Ekle
+        </button>
+    </div>
+
+    <div class="calendar-card">
+
+        <div class="calendar-toolbar">
+            <h2 id="monthTitle"></h2>
+
+            <div class="calendar-actions">
+                <button id="todayBtn" class="btn btn-outline-secondary">
+                    Bugün
+                </button>
+
+                <button id="prevMonth" class="btn btn-outline-secondary"
+                        aria-label="Önceki ay">
+                    &lt;
+                </button>
+
+                <button id="nextMonth" class="btn btn-outline-secondary"
+                        aria-label="Sonraki ay">
+                    &gt;
+                </button>
+            </div>
+        </div>
+
+        <div class="calendar-weekdays">
+            <div>Pzt</div>
+            <div>Sal</div>
+            <div>Çar</div>
+            <div>Per</div>
+            <div>Cum</div>
+            <div>Cmt</div>
+            <div>Paz</div>
+        </div>
+
+        <div id="calendarGrid" class="calendar-grid"></div>
+    </div>
+
+    <div class="selected-date-card">
+        <h3>Seçili Gün</h3>
+        <p id="selectedDate"></p>
         <p class="text-muted">
-            Etkinliklerinizi ve günlük planlarınızı tek yerden yönetin.
+            Etkinlikler ilerleyen haftalarda burada listelenecek.
         </p>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Takvimim</h4>
-            <span class="badge bg-primary">İlk Sürüm</span>
-        </div>
-
-        <div class="card-body text-center py-5">
-            <h5>Takvim uygulamasına hoş geldiniz!</h5>
-            <p class="text-muted">
-                Yakında etkinliklerinizi burada görüntüleyebileceksiniz.
-            </p>
-            <button class="btn btn-primary" disabled>
-                + Etkinlik Ekle
-            </button>
-        </div>
-    </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/calendar.js"
+            asp-append-version="true"></script>
+}
