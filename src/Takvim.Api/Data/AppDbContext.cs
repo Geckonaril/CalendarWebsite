@@ -13,7 +13,7 @@ public class AppDbContext
     {
     }
 
-    public DbSet<AppUser> Users => Set<AppUser>();
+    
     public DbSet<Calendar> Calendars => Set<Calendar>();
     public DbSet<CalendarEvent> Events => Set<CalendarEvent>();
     public DbSet<Category> Categories => Set<Category>();
