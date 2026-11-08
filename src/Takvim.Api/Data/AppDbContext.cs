@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Takvim.Api.Models;
 
 namespace Takvim.Api.Data;
 
-public class AppDbContext : DbContext
+public class AppDbContext
+    : IdentityDbContext<AppUser, IdentityRole<int>, int>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -21,27 +24,16 @@ public class AppDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         // USERS
+        
         modelBuilder.Entity<AppUser>(entity =>
         {
-            entity.HasKey(x => x.Id);
+        entity.ToTable("Users");
 
-            entity.Property(x => x.Name)
-                .HasMaxLength(100)
-                .IsRequired();
-
-            entity.Property(x => x.Email)
-                .HasMaxLength(254)
-                .IsRequired();
-
-            entity.HasIndex(x => x.Email).IsUnique();
-
-            entity.Property(x => x.PasswordHash)
-                .IsRequired();
-
-            entity.Property(x => x.Role)
-                .HasMaxLength(20)
-                .IsRequired();
+        entity.Property(x => x.Name)
+            .HasMaxLength(100)
+            .IsRequired();
         });
+
 
         // CALENDARS
         modelBuilder.Entity<Calendar>(entity =>
@@ -118,5 +110,4 @@ public class AppDbContext : DbContext
                 .HasForeignKey(x => x.EventId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
-    }
-}
+    }}

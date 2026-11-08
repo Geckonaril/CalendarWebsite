@@ -1,69 +1,139 @@
-﻿@section Styles {
-    <link rel="stylesheet"
-          href="~/css/calendar.css"
-          asp-append-version="true" />
-}
+﻿
 @{
     ViewData["Title"] = "Takvimim";
 }
 
-<div class="calendar-container">
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/calendar.css"
+          asp-append-version="true" />
+}
 
-    <div class="calendar-header">
+<div class="calendar-page">
+
+    <!-- Sayfa başlığı -->
+    <div class="calendar-page-header">
         <div>
+            <span class="page-eyebrow">ÇALIŞMA ALANIM</span>
             <h1>Takvimim</h1>
-            <p>Günlük planlarını ve etkinliklerini takip et.</p>
+            <p>Günlerini planla, zamanını kolayca yönet.</p>
         </div>
 
-        <button class="btn btn-primary" disabled
-                title="Etkinlik ekleme yakında">
-            + Etkinlik Ekle
+        <button class="btn btn-primary add-event-btn"
+                type="button"
+                disabled
+                title="Etkinlik oluşturma 4. haftada eklenecek">
+            + Yeni Etkinlik
         </button>
     </div>
 
-    <div class="calendar-card">
+    <div class="calendar-layout">
 
-        <div class="calendar-toolbar">
-            <h2 id="monthTitle"></h2>
+        <!-- Ana takvim -->
+        <section class="calendar-card">
 
-            <div class="calendar-actions">
-                <button id="todayBtn" class="btn btn-outline-secondary">
-                    Bugün
-                </button>
+            <div class="calendar-toolbar">
+                <div>
+                    <span class="toolbar-label">AYLIK GÖRÜNÜM</span>
+                    <h2 id="monthTitle"></h2>
+                </div>
 
-                <button id="prevMonth" class="btn btn-outline-secondary"
-                        aria-label="Önceki ay">
-                    &lt;
-                </button>
+                <div class="calendar-actions">
+                    <button id="todayBtn"
+                            type="button"
+                            class="calendar-action-btn today-action">
+                        Bugün
+                    </button>
 
-                <button id="nextMonth" class="btn btn-outline-secondary"
-                        aria-label="Sonraki ay">
-                    &gt;
-                </button>
+                    <button id="prevMonth"
+                            type="button"
+                            class="calendar-action-btn arrow-action"
+                            aria-label="Önceki ay">
+                        &#8249;
+                    </button>
+
+                    <button id="nextMonth"
+                            type="button"
+                            class="calendar-action-btn arrow-action"
+                            aria-label="Sonraki ay">
+                        &#8250;
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <div class="calendar-weekdays">
-            <div>Pzt</div>
-            <div>Sal</div>
-            <div>Çar</div>
-            <div>Per</div>
-            <div>Cum</div>
-            <div>Cmt</div>
-            <div>Paz</div>
-        </div>
+            <div class="calendar-weekdays"
+                 aria-hidden="true">
+                <div>Pzt</div>
+                <div>Sal</div>
+                <div>Çar</div>
+                <div>Per</div>
+                <div>Cum</div>
+                <div>Cmt</div>
+                <div>Paz</div>
+            </div>
 
-        <div id="calendarGrid" class="calendar-grid"></div>
+            <div id="calendarGrid"
+                 class="calendar-grid"
+                 aria-label="Aylık takvim">
+            </div>
+
+            <div class="calendar-legend">
+                <span class="legend-dot"></span>
+                Mavi çerçeve bugünü gösterir.
+                Bir gün seçmek için üzerine tıkla.
+            </div>
+        </section>
+
+        <!-- Sağ bilgi paneli -->
+        <aside class="day-panel">
+            <div class="day-panel-heading">
+                <span class="panel-eyebrow">GÜN DETAYI</span>
+                <h3>Seçili Gün</h3>
+            </div>
+
+            <div class="selected-date-display">
+                <span id="selectedDayNumber"
+                      class="selected-day-number"></span>
+
+                <div class="selected-day-meta">
+                    <span id="selectedWeekday"></span>
+                    <strong id="selectedMonthYear"></strong>
+                </div>
+            </div>
+
+            <div class="day-panel-divider"></div>
+
+            <div class="empty-events">
+                <div class="empty-events-icon">
+                    <svg viewBox="0 0 24 24"
+                         width="25" height="25"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.7"
+                         stroke-linecap="round"
+                         stroke-linejoin="round"
+                         aria-hidden="true">
+                        <rect x="3" y="5"
+                              width="18" height="16" rx="2"/>
+                        <path d="M7 3v4M17 3v4M3 10h18"/>
+                        <path d="M9 15h6"/>
+                    </svg>
+                </div>
+
+                <h4>Henüz etkinlik yok</h4>
+                <p>
+                    Bu güne ait etkinlikler burada
+                    görüntülenecek.
+                </p>
+            </div>
+
+            <div class="panel-info">
+                Etkinlik oluşturma ve yönetme özellikleri
+                ilerleyen haftalarda kullanıma açılacak.
+            </div>
+        </aside>
+
     </div>
-
-    <div class="selected-date-card">
-        <h3>Seçili Gün</h3>
-        <p id="selectedDate"></p>
-        <p class="text-muted">
-            Etkinlikler ilerleyen haftalarda burada listelenecek.
-        </p>
-    </div>
-
 </div>
 
 @section Scripts {

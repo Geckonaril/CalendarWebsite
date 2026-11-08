@@ -1,0 +1,145 @@
+
+@model Takvim.Web.Controllers.LoginForm
+
+@{
+    ViewData["Title"] = "Giriş Yap";
+    ViewData["AuthPage"] = true;
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/auth.css"
+          asp-append-version="true" />
+}
+
+<div class="auth-layout">
+
+    <section class="auth-form-panel">
+        <div class="auth-form-content">
+
+            <div class="auth-brand">
+                Takvim<span>+</span>
+            </div>
+
+            <div class="auth-heading">
+                <span class="auth-eyebrow">HOŞ GELDİN</span>
+                <h1>Tekrar hoş geldin.</h1>
+                <p>
+                    Planlarına kaldığın yerden devam etmek
+                    için hesabına giriş yap.
+                </p>
+            </div>
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["Success"]
+                </div>
+            }
+
+            <form asp-controller="Account"
+                  asp-action="Login"
+                  method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger small mb-3"></div>
+
+                <div class="auth-field">
+                    <label asp-for="Email"
+                           class="form-label">
+                        E-posta adresi
+                    </label>
+
+                    <input asp-for="Email"
+                           class="form-control"
+                           placeholder="ornek@email.com"
+                           autocomplete="email" />
+
+                    <span asp-validation-for="Email"
+                          class="text-danger small"></span>
+                </div>
+
+                <div class="auth-field">
+                    <div class="auth-label-row">
+                        <label asp-for="Password"
+                               class="form-label">
+                            Parola
+                        </label>
+                    </div>
+
+                    <input asp-for="Password"
+                           class="form-control"
+                           placeholder="Parolanızı girin"
+                           autocomplete="current-password" />
+
+                    <span asp-validation-for="Password"
+                          class="text-danger small"></span>
+                </div>
+
+                <button type="submit"
+                        class="auth-submit">
+                    Giriş Yap
+                </button>
+            </form>
+
+            <p class="auth-switch">
+                Henüz hesabın yok mu?
+                <a asp-controller="Account"
+                   asp-action="Register">
+                    Hesap oluştur
+                </a>
+            </p>
+
+        </div>
+    </section>
+
+    <aside class="auth-promo">
+        <div class="auth-promo-content">
+            <span class="promo-eyebrow">
+                ZAMANINI DAHA İYİ YÖNET
+            </span>
+
+            <h2>
+                Her planın için<br />
+                tek bir yer.
+            </h2>
+
+            <p>
+                Günlerini düzenle, önemli tarihlerini
+                takip et ve planlarını kolayca yönet.
+            </p>
+
+            <div class="promo-preview">
+                <div class="promo-preview-top">
+                    <strong>Takvimim</strong>
+                    <span>Kasım 2026</span>
+                </div>
+
+                <div class="promo-preview-row">
+                    <span class="promo-date">08</span>
+                    <div>
+                        <strong>Gününü planla</strong>
+                        <small>
+                            Her şey kontrol altında.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="promo-preview-row">
+                    <span class="promo-date">09</span>
+                    <div>
+                        <strong>Hedeflerine odaklan</strong>
+                        <small>
+                            Zamanını verimli kullan.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

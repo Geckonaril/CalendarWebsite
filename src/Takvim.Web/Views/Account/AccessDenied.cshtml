@@ -1,0 +1,53 @@
+
+@{
+    ViewData["Title"] = "Erişim Engellendi";
+    ViewData["AuthPage"] = true;
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/auth.css"
+          asp-append-version="true" />
+}
+
+<div class="auth-layout">
+    <section class="auth-form-panel">
+        <div class="auth-form-content">
+            <div class="auth-brand">
+                Takvim<span>+</span>
+            </div>
+
+            <div class="auth-heading">
+                <span class="auth-eyebrow">
+                    ERİŞİM ENGELLENDİ
+                </span>
+
+                <h1>Bu sayfaya erişim yetkin yok.</h1>
+                <p>
+                    Bu işlemi gerçekleştirmek için
+                    hesabının gerekli yetkiye
+                    sahip olması gerekiyor.
+                </p>
+            </div>
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="auth-submit d-block text-center text-decoration-none">
+                Takvime Dön
+            </a>
+        </div>
+    </section>
+
+    <aside class="auth-promo">
+        <div class="auth-promo-content">
+            <span class="promo-eyebrow">
+                TAKVİM+
+            </span>
+            <h2>Planların kontrol altında.</h2>
+            <p>
+                Takvim+ ile zamanını düzenlemeye
+                devam edebilirsin.
+            </p>
+        </div>
+    </aside>
+</div>

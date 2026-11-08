@@ -1,0 +1,166 @@
+
+@model Takvim.Web.Controllers.RegisterForm
+
+@{
+    ViewData["Title"] = "Hesap Oluştur";
+    ViewData["AuthPage"] = true;
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/auth.css"
+          asp-append-version="true" />
+}
+
+<div class="auth-layout">
+
+    <section class="auth-form-panel">
+        <div class="auth-form-content">
+
+            <div class="auth-brand">
+                Takvim<span>+</span>
+            </div>
+
+            <div class="auth-heading">
+                <span class="auth-eyebrow">YENİ HESAP</span>
+                <h1>Planlamaya başla.</h1>
+                <p>
+                    Takvim+ hesabını oluştur ve
+                    planlarını tek bir yerden yönet.
+                </p>
+            </div>
+
+            <form asp-controller="Account"
+                  asp-action="Register"
+                  method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger small mb-3"></div>
+
+                <div class="auth-field">
+                    <label asp-for="Name" class="form-label">
+                        Ad Soyad
+                    </label>
+
+                    <input asp-for="Name"
+                           class="form-control"
+                           placeholder="Adınız Soyadınız"
+                           autocomplete="name" />
+
+                    <span asp-validation-for="Name"
+                          class="text-danger small"></span>
+                </div>
+
+                <div class="auth-field">
+                    <label asp-for="Email" class="form-label">
+                        E-posta adresi
+                    </label>
+
+                    <input asp-for="Email"
+                           class="form-control"
+                           placeholder="ornek@email.com"
+                           autocomplete="email" />
+
+                    <span asp-validation-for="Email"
+                          class="text-danger small"></span>
+                </div>
+
+                <div class="auth-field">
+                    <label asp-for="Password" class="form-label">
+                        Parola
+                    </label>
+
+                    <input asp-for="Password"
+                           class="form-control"
+                           placeholder="Güçlü bir parola oluşturun"
+                           autocomplete="new-password" />
+
+                    <div class="password-hint">
+                        En az 8 karakter, bir büyük harf,
+                        bir küçük harf ve bir rakam içermelidir.
+                    </div>
+
+                    <span asp-validation-for="Password"
+                          class="text-danger small"></span>
+                </div>
+
+                <div class="auth-field">
+                    <label asp-for="ConfirmPassword"
+                           class="form-label">
+                        Parola Tekrar
+                    </label>
+
+                    <input asp-for="ConfirmPassword"
+                           class="form-control"
+                           placeholder="Parolanızı tekrar girin"
+                           autocomplete="new-password" />
+
+                    <span asp-validation-for="ConfirmPassword"
+                          class="text-danger small"></span>
+                </div>
+
+                <button type="submit"
+                        class="auth-submit">
+                    Hesap Oluştur
+                </button>
+            </form>
+
+            <p class="auth-switch">
+                Zaten bir hesabın var mı?
+                <a asp-controller="Account"
+                   asp-action="Login">
+                    Giriş yap
+                </a>
+            </p>
+
+        </div>
+    </section>
+
+    <aside class="auth-promo">
+        <div class="auth-promo-content">
+
+            <span class="promo-eyebrow">
+                TAKVİM+ İLE TANIŞ
+            </span>
+
+            <h2>
+                Daha düzenli günler,<br />
+                daha net planlar.
+            </h2>
+
+            <p>
+                Kişisel takvimlerini, etkinliklerini
+                ve önemli tarihlerini tek bir
+                platformda yönet.
+            </p>
+
+            <div class="promo-preview">
+                <div class="promo-preview-top">
+                    <strong>Takvim+</strong>
+                    <span>Planların bir arada</span>
+                </div>
+
+                <div class="promo-feature">
+                    <span class="feature-dot"></span>
+                    Günlük, haftalık ve aylık planlama
+                </div>
+
+                <div class="promo-feature">
+                    <span class="feature-dot"></span>
+                    Etkinlik ve kategori yönetimi
+                </div>
+
+                <div class="promo-feature">
+                    <span class="feature-dot"></span>
+                    Kişisel takvimler ve hatırlatıcılar
+                </div>
+            </div>
+
+        </div>
+    </aside>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

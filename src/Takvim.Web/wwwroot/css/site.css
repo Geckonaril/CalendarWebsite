@@ -1,31 +1,244 @@
-html {
-  font-size: 14px;
+
+/* Takvim+ Genel Tasarım */
+
+:root {
+    --brand: #3563E9;
+    --brand-hover: #244FC7;
+    --ink: #18243A;
+    --muted: #748199;
+    --line: #E7EBF3;
+    --surface: #FFFFFF;
+    --canvas: #F6F8FC;
 }
 
-@media (min-width: 768px) {
-  html {
+html {
     font-size: 16px;
-  }
+    min-height: 100%;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+* {
+    box-sizing: border-box;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+body.app-body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
-body {
-  margin-bottom: 60px;
+a {
+    text-decoration: none;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* Üst menü */
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.topbar-inner {
+    max-width: 1500px;
+    min-height: 72px;
+    padding: 12px 32px;
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.brand {
+    font-size: 26px;
+    font-weight: 750;
+    letter-spacing: -1px;
+    color: var(--ink);
+}
+
+.brand span {
+    color: var(--brand);
+}
+
+.brand:hover {
+    color: var(--ink);
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.topbar-actions form {
+    margin: 0;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.btn-primary {
+    background: var(--brand);
+    border-color: var(--brand);
+}
+
+.btn-primary:hover {
+    background: var(--brand-hover);
+    border-color: var(--brand-hover);
+}
+
+/* Ana sayfa yerleşimi */
+
+.app-shell {
+    flex: 1;
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 230px minmax(0, 1fr);
+}
+
+/* Sol kenar menüsü */
+
+.sidebar {
+    padding: 34px 20px;
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+}
+
+.sidebar-title,
+.sidebar-section {
+    color: #95A1B2;
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 1px;
+    padding: 0 12px;
+}
+
+.sidebar-section {
+    margin-top: 36px;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    margin-top: 18px;
+    padding: 12px;
+
+    border-radius: 11px;
+    color: #4C5D74;
+    font-size: 14px;
+    font-weight: 650;
+}
+
+.sidebar-link.active {
+    background: #EDF2FF;
+    color: var(--brand);
+}
+
+.sidebar-link:hover {
+    color: var(--brand);
+    background: #F3F6FF;
+}
+
+.sidebar-note {
+    padding: 12px;
+    color: #8896A9;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* Ana içerik */
+
+.app-content {
+    min-width: 0;
+    padding: 34px 34px 55px;
+}
+
+/* Giriş ve kayıt sayfalarında sol menü yok */
+
+.auth-shell {
+    display: block;
+}
+
+.auth-shell .app-content {
+    padding: 30px 34px 55px;
+}
+
+/* Alt bilgi */
+
+.app-footer {
+    text-align: center;
+    padding: 15px;
+    background: var(--surface);
+    color: #8B97AB;
+    font-size: 12px;
+    border-top: 1px solid var(--line);
+}
+
+/* Tablet ve mobil */
+
+@media (max-width: 900px) {
+    .app-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        padding: 12px 18px;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .sidebar-title,
+    .sidebar-section,
+    .sidebar-note {
+        display: none;
+    }
+
+    .sidebar-link {
+        margin: 0;
+    }
+
+    .app-content {
+        padding: 24px 18px 45px;
+    }
+}
+
+@media (max-width: 560px) {
+    .topbar-inner {
+        padding: 12px 16px;
+        min-height: 64px;
+    }
+
+    .brand {
+        font-size: 23px;
+    }
+
+    .topbar-actions {
+        gap: 5px;
+    }
+
+    .topbar-actions .btn {
+        font-size: 12px;
+        padding: 6px 9px;
+    }
+
+    .user-name {
+        display: none;
+    }
+
+    .auth-shell .app-content {
+        padding: 16px 12px 30px;
+    }
 }

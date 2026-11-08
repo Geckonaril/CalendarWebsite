@@ -2,7 +2,15 @@
 document.addEventListener("DOMContentLoaded", () => {
     const monthTitle = document.getElementById("monthTitle");
     const calendarGrid = document.getElementById("calendarGrid");
-    const selectedDateText = document.getElementById("selectedDate");
+
+    const selectedDayNumber =
+        document.getElementById("selectedDayNumber");
+
+    const selectedWeekday =
+        document.getElementById("selectedWeekday");
+
+    const selectedMonthYear =
+        document.getElementById("selectedMonthYear");
 
     const today = new Date();
 
@@ -23,17 +31,37 @@ document.addEventListener("DOMContentLoaded", () => {
         year: "numeric"
     });
 
-    const dateFormatter = new Intl.DateTimeFormat("tr-TR", {
+    const weekdayFormatter = new Intl.DateTimeFormat("tr-TR", {
+        weekday: "long"
+    });
+
+    const monthYearFormatter = new Intl.DateTimeFormat("tr-TR", {
+        month: "long",
+        year: "numeric"
+    });
+
+    const fullDateFormatter = new Intl.DateTimeFormat("tr-TR", {
         day: "numeric",
         month: "long",
         year: "numeric",
         weekday: "long"
     });
 
-    function isSameDay(date1, date2) {
-        return date1.getFullYear() === date2.getFullYear() &&
-               date1.getMonth() === date2.getMonth() &&
-               date1.getDate() === date2.getDate();
+    function isSameDay(a, b) {
+        return a.getFullYear() === b.getFullYear() &&
+               a.getMonth() === b.getMonth() &&
+               a.getDate() === b.getDate();
+    }
+
+    function updateSelectedDatePanel() {
+        selectedDayNumber.textContent =
+            selectedDate.getDate();
+
+        selectedWeekday.textContent =
+            weekdayFormatter.format(selectedDate);
+
+        selectedMonthYear.textContent =
+            monthYearFormatter.format(selectedDate);
     }
 
     function selectDate(date) {
@@ -43,9 +71,13 @@ document.addEventListener("DOMContentLoaded", () => {
             date.getDate()
         );
 
-        selectedDateText.textContent =
-            dateFormatter.format(selectedDate);
+        currentDate = new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            1
+        );
 
+        updateSelectedDatePanel();
         renderCalendar();
     }
 
@@ -58,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         button.setAttribute(
             "aria-label",
-            dateFormatter.format(date)
+            fullDateFormatter.format(date)
         );
 
         if (!isCurrentMonth) {
@@ -93,15 +125,15 @@ document.addEventListener("DOMContentLoaded", () => {
             monthFormatter.format(currentDate);
 
         const firstDay = new Date(year, month, 1);
-        const daysInMonth = new Date(year, month + 1, 0)
-            .getDate();
 
-        // Haftanın ilk günü Pazartesi.
-        const startOffset = (firstDay.getDay() + 6) % 7;
+        const daysInMonth =
+            new Date(year, month + 1, 0).getDate();
 
-        const totalCells = Math.ceil(
-            (startOffset + daysInMonth) / 7
-        ) * 7;
+        const startOffset =
+            (firstDay.getDay() + 6) % 7;
+
+        const totalCells =
+            Math.ceil((startOffset + daysInMonth) / 7) * 7;
 
         for (let i = 0; i < totalCells; i++) {
             const date = new Date(
@@ -111,8 +143,8 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             const isCurrentMonth =
-                date.getMonth() === month &&
-                date.getFullYear() === year;
+                date.getFullYear() === year &&
+                date.getMonth() === month;
 
             calendarGrid.appendChild(
                 createDayButton(date, isCurrentMonth)
@@ -122,29 +154,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("prevMonth")
         .addEventListener("click", () => {
-            currentDate.setMonth(currentDate.getMonth() - 1);
+            currentDate = new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth() - 1,
+                1
+            );
+
             renderCalendar();
         });
 
     document.getElementById("nextMonth")
         .addEventListener("click", () => {
-            currentDate.setMonth(currentDate.getMonth() + 1);
+            currentDate = new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth() + 1,
+                1
+            );
+
             renderCalendar();
         });
 
     document.getElementById("todayBtn")
         .addEventListener("click", () => {
-            currentDate = new Date(
-                today.getFullYear(),
-                today.getMonth(),
-                1
-            );
-
             selectDate(today);
         });
 
-    selectedDateText.textContent =
-        dateFormatter.format(selectedDate);
-
+    updateSelectedDatePanel();
     renderCalendar();
 });
