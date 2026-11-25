@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Takvim.Api.Models;
+using Takvim.Api.Services;
 
 namespace Takvim.Api.Controllers;
 
@@ -17,11 +18,13 @@ public record LoginRequest(
     [Required] string Password
 );
 
-public record UserResponse(
+public record LoginResponse(
     int Id,
     string Name,
     string Email,
-    string Role
+    string Role,
+    string AccessToken,
+    DateTime ExpiresAtUtc
 );
 
 [ApiController]
@@ -30,13 +33,16 @@ public class AccountController : ControllerBase
 {
     private readonly UserManager<AppUser> _users;
     private readonly SignInManager<AppUser> _signIn;
+    private readonly TokenService _tokens;
 
     public AccountController(
         UserManager<AppUser> users,
-        SignInManager<AppUser> signIn)
+        SignInManager<AppUser> signIn,
+        TokenService tokens)
     {
         _users = users;
         _signIn = signIn;
+        _tokens = tokens;
     }
 
     [HttpPost("register")]
@@ -76,6 +82,8 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("login")]
+    [ProducesResponseType<LoginResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login(
         LoginRequest request)
     {
@@ -102,12 +110,20 @@ public class AccountController : ControllerBase
         }
 
         var roles = await _users.GetRolesAsync(user);
+        var token = _tokens.Create(user, roles);
 
-        return Ok(new UserResponse(
+        // Admin rolü varsa öncelikli olarak döndürülür.
+        var primaryRole = roles.Contains("Admin")
+            ? "Admin"
+            : roles.FirstOrDefault() ?? "User";
+
+        return Ok(new LoginResponse(
             user.Id,
             user.Name,
             user.Email ?? "",
-            roles.FirstOrDefault() ?? "User"
+            primaryRole,
+            token.Token,
+            token.ExpiresAtUtc
         ));
     }
 }

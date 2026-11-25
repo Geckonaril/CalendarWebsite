@@ -1,17 +1,29 @@
 
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Takvim.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // MVC
 builder.Services.AddControllersWithViews();
 
-// Web API bağlantısı
-builder.Services.AddHttpClient("TakvimApi", client =>
+// Web API bağlantısı (oturumdaki JWT otomatik eklenir)
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<ApiTokenHandler>();
+
+builder.Services
+    .AddHttpClient("TakvimApi", client =>
+    {
+        client.BaseAddress = new Uri(
+            builder.Configuration["ApiBaseUrl"]
+            ?? "http://localhost:5055");
+    })
+    .AddHttpMessageHandler<ApiTokenHandler>();
+
+// AJAX istekleri antiforgery token'ı bu başlıkla gönderir
+builder.Services.AddAntiforgery(options =>
 {
-    client.BaseAddress = new Uri(
-        builder.Configuration["ApiBaseUrl"]
-        ?? "http://localhost:5055");
+    options.HeaderName = "RequestVerificationToken";
 });
 
 // Kullanıcı oturumu

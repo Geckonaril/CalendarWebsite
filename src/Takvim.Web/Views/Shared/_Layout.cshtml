@@ -1,6 +1,8 @@
 ﻿
 @{
     var isAuthPage = ViewData["AuthPage"] is true;
+    var currentController =
+        ViewContext.RouteData.Values["controller"]?.ToString();
 }
 
 <!DOCTYPE html>
@@ -86,10 +88,16 @@
                     ÇALIŞMA ALANIM
                 </div>
 
-                <a class="sidebar-link active"
+                <a class="sidebar-link @(currentController == "Home" ? "active" : "")"
                    asp-controller="Home"
                    asp-action="Index">
                     Takvimim
+                </a>
+
+                <a class="sidebar-link @(currentController == "Events" ? "active" : "")"
+                   asp-controller="Events"
+                   asp-action="Index">
+                    Etkinliklerim
                 </a>
 
                 <div class="sidebar-section">

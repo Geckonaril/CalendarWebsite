@@ -1,0 +1,105 @@
+@{
+    ViewData["Title"] = "Etkinliklerim";
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/calendar.css"
+          asp-append-version="true" />
+    <link rel="stylesheet"
+          href="~/css/events.css"
+          asp-append-version="true" />
+}
+
+<div class="calendar-page">
+
+    <div class="calendar-page-header">
+        <div>
+            <span class="page-eyebrow">ÇALIŞMA ALANIM</span>
+            <h1>Etkinliklerim</h1>
+            <p>Tüm etkinliklerini tek listede görüntüle ve yönet.</p>
+        </div>
+
+        <button class="btn btn-primary add-event-btn"
+                id="addEventBtn"
+                type="button">
+            + Yeni Etkinlik
+        </button>
+    </div>
+
+    <section class="calendar-card events-card">
+
+        <div class="calendar-toolbar">
+            <div>
+                <span class="toolbar-label">LİSTE GÖRÜNÜMÜ</span>
+                <h2 id="eventsCount">Etkinlikler</h2>
+            </div>
+
+            <div class="events-filter"
+                 role="tablist"
+                 aria-label="Etkinlik filtresi">
+                <button type="button"
+                        class="events-filter-btn active"
+                        role="tab"
+                        aria-selected="true"
+                        data-filter="upcoming">
+                    Yaklaşan
+                </button>
+                <button type="button"
+                        class="events-filter-btn"
+                        role="tab"
+                        aria-selected="false"
+                        data-filter="past">
+                    Geçmiş
+                </button>
+                <button type="button"
+                        class="events-filter-btn"
+                        role="tab"
+                        aria-selected="false"
+                        data-filter="all">
+                    Tümü
+                </button>
+            </div>
+        </div>
+
+        <div id="eventsStatus"
+             class="day-events-status"
+             role="status"
+             hidden></div>
+
+        <div id="eventsGroups"
+             class="events-groups"></div>
+
+        <div id="eventsEmpty"
+             class="empty-events"
+             hidden>
+            <div class="empty-events-icon">
+                <svg viewBox="0 0 24 24"
+                     width="25" height="25"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.7"
+                     stroke-linecap="round"
+                     stroke-linejoin="round"
+                     aria-hidden="true">
+                    <rect x="3" y="5"
+                          width="18" height="16" rx="2"/>
+                    <path d="M7 3v4M17 3v4M3 10h18"/>
+                    <path d="M9 15h6"/>
+                </svg>
+            </div>
+
+            <h4>Gösterilecek etkinlik yok</h4>
+            <p>Yeni bir etkinlik oluşturarak başlayabilirsin.</p>
+        </div>
+    </section>
+</div>
+
+<partial name="_EventModal" />
+
+@section Scripts {
+    <script src="~/js/events.js"
+            asp-append-version="true"></script>
+    <script src="~/js/events-list.js"
+            asp-append-version="true"></script>
+}

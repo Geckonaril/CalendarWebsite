@@ -1,0 +1,113 @@
+@* Etkinlik ekleme / düzenleme penceresi (takvim ve etkinlik listesi sayfalarında ortak) *@
+
+<div id="eventAntiForgery" hidden>
+    @Html.AntiForgeryToken()
+</div>
+
+<div class="modal fade event-modal"
+     id="eventModal"
+     tabindex="-1"
+     aria-labelledby="eventModalTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <form class="modal-content" id="eventForm" novalidate>
+
+            <div class="modal-header">
+                <div>
+                    <span class="panel-eyebrow" id="eventModalEyebrow">YENİ ETKİNLİK</span>
+                    <h2 class="modal-title" id="eventModalTitle">Etkinlik oluştur</h2>
+                </div>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Kapat"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="alert alert-danger event-form-error"
+                     id="eventFormError"
+                     role="alert"
+                     hidden></div>
+
+                <div class="mb-3">
+                    <label for="eventTitle" class="form-label">Başlık</label>
+                    <input type="text"
+                           class="form-control"
+                           id="eventTitle"
+                           maxlength="200"
+                           required
+                           placeholder="Örn. Proje toplantısı"
+                           autocomplete="off" />
+                    <div class="invalid-feedback">Başlık zorunludur.</div>
+                </div>
+
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input"
+                           type="checkbox"
+                           role="switch"
+                           id="eventAllDay" />
+                    <label class="form-check-label" for="eventAllDay">Tüm gün</label>
+                </div>
+
+                <div class="event-time-grid">
+                    <div>
+                        <label for="eventStartDate" class="form-label">Başlangıç</label>
+                        <div class="event-time-row">
+                            <input type="date" class="form-control" id="eventStartDate" required />
+                            <input type="time" class="form-control event-time-input" id="eventStartTime" required />
+                        </div>
+                    </div>
+                    <div>
+                        <label for="eventEndDate" class="form-label">Bitiş</label>
+                        <div class="event-time-row">
+                            <input type="date" class="form-control" id="eventEndDate" required />
+                            <input type="time" class="form-control event-time-input" id="eventEndTime" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="invalid-feedback event-range-error"
+                     id="eventRangeError"
+                     hidden>
+                    Bitiş zamanı başlangıçtan önce olamaz.
+                </div>
+
+                <div class="mb-3 mt-3">
+                    <label for="eventLocation" class="form-label">Konum <span class="optional">(isteğe bağlı)</span></label>
+                    <input type="text"
+                           class="form-control"
+                           id="eventLocation"
+                           maxlength="250"
+                           autocomplete="off" />
+                </div>
+
+                <div class="mb-1">
+                    <label for="eventDescription" class="form-label">Açıklama <span class="optional">(isteğe bağlı)</span></label>
+                    <textarea class="form-control"
+                              id="eventDescription"
+                              rows="3"
+                              maxlength="2000"></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-outline-danger me-auto"
+                        id="eventDeleteBtn"
+                        hidden>
+                    Sil
+                </button>
+                <button type="button"
+                        class="btn btn-light"
+                        data-bs-dismiss="modal">
+                    Vazgeç
+                </button>
+                <button type="submit"
+                        class="btn btn-primary"
+                        id="eventSaveBtn">
+                    Kaydet
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -5,6 +5,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Takvim.Web.Services;
 
 namespace Takvim.Web.Controllers;
 
@@ -36,7 +37,12 @@ public class LoginForm
 }
 
 public record ApiUser(
-    int Id, string Name, string Email, string Role);
+    int Id,
+    string Name,
+    string Email,
+    string Role,
+    string AccessToken,
+    DateTime ExpiresAtUtc);
 
 public class AccountController : Controller
 {
@@ -126,7 +132,7 @@ public class AccountController : Controller
             return View(form);
         }
 
-        if (user is null)
+        if (user is null || string.IsNullOrEmpty(user.AccessToken))
         {
             ModelState.AddModelError("", "Giriş yanıtı alınamadı.");
             return View(form);
@@ -137,14 +143,20 @@ public class AccountController : Controller
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new(ClaimTypes.Name, user.Name),
             new(ClaimTypes.Email, user.Email),
-            new(ClaimTypes.Role, user.Role)
+            new(ClaimTypes.Role, user.Role),
+            new(ApiTokenHandler.TokenClaimType, user.AccessToken)
         };
 
         var identity = new ClaimsIdentity(claims, "WebCookie");
 
+        // Web oturumu, API token'ı ile aynı anda sona erer.
         await HttpContext.SignInAsync(
             "WebCookie",
-            new ClaimsPrincipal(identity));
+            new ClaimsPrincipal(identity),
+            new AuthenticationProperties
+            {
+                ExpiresUtc = user.ExpiresAtUtc
+            });
 
         return RedirectToAction("Index", "Home");
     }

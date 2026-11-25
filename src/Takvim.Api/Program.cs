@@ -1,15 +1,22 @@
 
 using Npgsql;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Takvim.Api.Data;
 using Takvim.Api.Models;
+using Takvim.Api.OpenApi;
+using Takvim.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Controller ve OpenAPI
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+});
 
 // PostgreSQL bağlantısı
 var connectionString =
@@ -49,12 +56,65 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Account/AccessDenied";
 });
 
+// JWT (Web uygulaması ve Swagger API'ye Bearer token ile erişir)
+var jwtOptions = builder.Configuration
+    .GetSection(JwtOptions.SectionName)
+    .Get<JwtOptions>() ?? new JwtOptions();
+
+if (jwtOptions.Key.Length < 32)
+{
+    throw new InvalidOperationException(
+        "Jwt:Key yapılandırılmamış veya 32 karakterden kısa.");
+}
+
+builder.Services.Configure<JwtOptions>(
+    builder.Configuration.GetSection(JwtOptions.SectionName));
+
+builder.Services.AddSingleton<TokenService>();
+
+// AddIdentity varsayılan şemayı çerez yapar; API için JWT'ye çeviriyoruz.
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.MapInboundClaims = false;
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = jwtOptions.Issuer,
+            ValidateAudience = true,
+            ValidAudience = jwtOptions.Audience,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = jwtOptions.GetSigningKey(),
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromMinutes(1),
+            NameClaimType = "name",
+            RoleClaimType = "role"
+        };
+    });
+
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // OpenAPI
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    // Swagger UI: http://localhost:5055/swagger
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "Takvim+ API v1");
+        options.DocumentTitle = "Takvim+ API";
+    });
 }
 
 if (!app.Environment.IsDevelopment())
@@ -208,8 +268,5 @@ using (var scope = app.Services.CreateScope())
         }
     }
 }
-
-app.Run();
-
 
 app.Run();

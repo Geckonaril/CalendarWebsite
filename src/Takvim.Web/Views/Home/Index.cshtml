@@ -7,6 +7,9 @@
     <link rel="stylesheet"
           href="~/css/calendar.css"
           asp-append-version="true" />
+    <link rel="stylesheet"
+          href="~/css/events.css"
+          asp-append-version="true" />
 }
 
 <div class="calendar-page">
@@ -20,9 +23,8 @@
         </div>
 
         <button class="btn btn-primary add-event-btn"
-                type="button"
-                disabled
-                title="Etkinlik oluşturma 4. haftada eklenecek">
+                id="addEventBtn"
+                type="button">
             + Yeni Etkinlik
         </button>
     </div>
@@ -80,7 +82,8 @@
             <div class="calendar-legend">
                 <span class="legend-dot"></span>
                 Mavi çerçeve bugünü gösterir.
-                Bir gün seçmek için üzerine tıkla.
+                Bir gün seçmek için üzerine tıkla,
+                etkinliği düzenlemek için etkinliğe tıkla.
             </div>
         </section>
 
@@ -103,7 +106,18 @@
 
             <div class="day-panel-divider"></div>
 
-            <div class="empty-events">
+            <div id="dayEventsStatus"
+                 class="day-events-status"
+                 role="status"
+                 hidden></div>
+
+            <div id="dayEventList"
+                 class="day-event-list"
+                 aria-label="Seçili günün etkinlikleri"></div>
+
+            <div id="dayEventsEmpty"
+                 class="empty-events"
+                 hidden>
                 <div class="empty-events-icon">
                     <svg viewBox="0 0 24 24"
                          width="25" height="25"
@@ -122,21 +136,25 @@
 
                 <h4>Henüz etkinlik yok</h4>
                 <p>
-                    Bu güne ait etkinlikler burada
-                    görüntülenecek.
+                    Bu güne ait etkinlik bulunmuyor.
                 </p>
             </div>
 
-            <div class="panel-info">
-                Etkinlik oluşturma ve yönetme özellikleri
-                ilerleyen haftalarda kullanıma açılacak.
-            </div>
+            <button id="addDayEventBtn"
+                    type="button"
+                    class="btn btn-outline-primary w-100 add-day-event-btn">
+                + Bu güne etkinlik ekle
+            </button>
         </aside>
 
     </div>
 </div>
 
+<partial name="_EventModal" />
+
 @section Scripts {
+    <script src="~/js/events.js"
+            asp-append-version="true"></script>
     <script src="~/js/calendar.js"
             asp-append-version="true"></script>
 }

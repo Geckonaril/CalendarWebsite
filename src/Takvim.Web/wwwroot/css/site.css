@@ -206,8 +206,15 @@ a {
         display: none;
     }
 
+    .sidebar {
+        display: flex;
+        gap: 6px;
+        overflow-x: auto;
+    }
+
     .sidebar-link {
         margin: 0;
+        white-space: nowrap;
     }
 
     .app-content {

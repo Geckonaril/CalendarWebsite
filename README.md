@@ -42,11 +42,42 @@ PostgreSQL üzerinde takvim_db veritabanı kullanılır.
 
 Bağlantı bilgileri .NET User Secrets ile saklanır.
 
+## Etkinlik API'si (4. Hafta)
+
+Etkinlikler için RESTful Web API (`/api/events`), JWT Bearer ile korunur.
+Kullanıcı yalnızca kendi takvimlerindeki etkinliklere erişebilir.
+
+| Yöntem | Uç nokta | Açıklama |
+|--------|----------|----------|
+| GET | /api/events?from=&to= | Etkinlikleri listeler (isteğe bağlı UTC tarih aralığı) |
+| GET | /api/events/{id} | Tek etkinlik |
+| POST | /api/events | Etkinlik oluşturur (takvim verilmezse varsayılan "Takvimim" kullanılır) |
+| PUT | /api/events/{id} | Etkinliği günceller |
+| DELETE | /api/events/{id} | Etkinliği siler |
+
+### Swagger ile test
+
+1. API'yi çalıştırın ve http://localhost:5055/swagger adresini açın.
+2. `POST /api/account/login` ile giriş yapın, yanıttaki `accessToken` değerini kopyalayın.
+3. Sağ üstteki **Authorize** düğmesine token'ı yapıştırın; ardından Events uç noktalarını deneyin.
+
+Alternatif olarak `src/Takvim.Api/Takvim.Api.http` dosyasındaki hazır istekler kullanılabilir.
+
+### JWT yapılandırması
+
+`Jwt:Key` geliştirme ortamında `appsettings.Development.json` içinde tanımlıdır.
+Üretim ortamında bu anahtar mutlaka User Secrets veya ortam değişkeni ile değiştirilmelidir:
+
+    dotnet user-secrets set "Jwt:Key" "<en-az-32-karakterlik-gizli-anahtar>"
+
+Web uygulaması girişte aldığı token'ı oturum çerezinde saklar ve API isteklerine
+otomatik olarak ekler. Web arayüzünde etkinlik ekleme, listeleme, güncelleme ve
+silme işlemleri **Takvimim** (aylık takvim) ve **Etkinliklerim** sayfalarından yapılır.
+
 ## Planlanan Özellikler
 
 - Kullanıcı kayıt ve giriş işlemleri
 - Günlük, haftalık ve aylık takvim
-- Etkinlik CRUD işlemleri
 - Kategori ve hatırlatıcı yönetimi
 - Yönetici paneli
 - Rol bazlı yetkilendirme
